@@ -1,0 +1,27 @@
+{
+    "name": "englishdom/converter",
+    "description": "A data converter",
+    "type": "library",
+    "homepage": "https://github.com/englishdom/converter",
+    "license": "Apache-2.0",
+    "require": {
+        "php": "^7.2"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.4",
+        "mockery/mockery": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Converter\\": "src/Converter/",
+            "Example\\": "example/",
+            "Unit\\": "test/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always"
+    }
+}
