@@ -86,18 +86,17 @@ class Manager
         foreach ($this->readers as $readerArray) {
             /* Get part of data from reader */
             while ($data = $readerArray['reader']->read()) {
-                $readTransformer = new $readerArray['transformer'];
-                if (!$readTransformer instanceof Reader\Transformer\EntityTransformerInterface
-                    && !$readTransformer instanceof Reader\Transformer\CollectionTransformerInterface
+                if (!$readerArray['transformer'] instanceof Reader\Transformer\EntityTransformerInterface
+                    && !$readerArray['transformer'] instanceof Reader\Transformer\CollectionTransformerInterface
                 ) {
                     throw new ConverterException(
-                        'Transformer `'.$readerArray['transformer'].'` does not implement interfaces from Reader\Transformer!'
+                        'The `'.get_class($readerArray['transformer']).'` does not implement interfaces from Reader\Transformer!'
                     );
                 }
 
                 foreach ($data as $key => $one) {
                     /* start reader transformer */
-                    $readData = $readTransformer->transform($one);
+                    $readData = $readerArray['transformer']->transform($one);
 
                     /* start processors */
                     foreach ($this->getProcessors() as $processor) {
@@ -108,17 +107,16 @@ class Manager
                     foreach ($this->getWriters() as $writerArray) {
                         $writeData = $readData;
                         if (isset($writerArray['transformer']) && !empty($writerArray['transformer'])) {
-                            $writeTransformer = new $writerArray['transformer'];
-                            if (!$writeTransformer instanceof Writer\Transformer\EntityTransformerInterface
-                                && !$writeTransformer instanceof Writer\Transformer\CollectionTransformerInterface
+                            if (!$writerArray['transformer'] instanceof Writer\Transformer\EntityTransformerInterface
+                                && !$writerArray['transformer'] instanceof Writer\Transformer\CollectionTransformerInterface
                             ) {
                                 throw new ConverterException(
-                                    'Transformer `' . $writerArray['transformer'] . '` does not implement interfaces from Writer\Transformer!'
+                                    'The `' . get_class($writerArray['transformer']) . '` does not implement interfaces from Writer\Transformer!'
                                 );
                             }
 
                             /* start writer transformer */
-                            $writeData = $writeTransformer->transform($readData);
+                            $writeData = $writerArray['transformer']->transform($readData);
                         }
 
                         $writerArray['writer']->write($writeData);

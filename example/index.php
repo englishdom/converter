@@ -29,9 +29,9 @@ $writer = new \Converter\Writer\PdoWriter(
 //    [['writer' => $writer, 'transformer' => \Example\Transformer\Writer::class]]
 //);
 $manager = new \Converter\Manager(
-    [['reader' => $reader, 'transformer' => \Example\Transformer\CollectionReader::class]],
+    [['reader' => $reader, 'transformer' => new \Example\Transformer\CollectionReader()]],
     [new \Converter\Processor\FileExistProcessor()],
-    [['writer' => $writer, 'transformer' => \Example\Transformer\CollectionWriter::class]]
+    [['writer' => $writer, 'transformer' => new \Example\Transformer\CollectionWriter()]]
 );
 $manager->manage();
 
