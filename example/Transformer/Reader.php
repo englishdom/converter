@@ -2,10 +2,10 @@
 namespace Example\Transformer;
 
 use Converter\Processor\Entity\EntityConverterInterface;
-use Converter\Reader\Transformer\TransformerInterface;
+use Converter\Reader\Transformer\EntityTransformerInterface;
 use Example\Entity\Entity;
 
-class Reader implements TransformerInterface
+class Reader implements EntityTransformerInterface
 {
     /**
      * Get data from reader and return entity to processor

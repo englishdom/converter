@@ -31,14 +31,22 @@ class PdoWriter implements WriterInterface
             throw new WriterException('A table name did not set!');
         }
 
-        $insertKeys = array_keys($data);
-        $insertValues = array_values($data);
+        if (isset($data[0]) && is_array($data[0])) {
+            $insertKeys = implode('`,`', array_keys($data[0]));
+            foreach ($data as $one) {
+                $arrayValues[] = implode('\',\'', array_values($one));
+            }
+            $insertValues = implode('\'),(\'', $arrayValues);
+        } else {
+            $insertKeys = implode('`,`', array_keys($data));
+            $insertValues = implode('\',\'', array_values($data));
+        }
 
         $sql = sprintf(
             'INSERT INTO `%s` (`%s`) VALUES (\'%s\')',
             $this->tableName,
-            implode('`,`', $insertKeys),
-            implode('\',\'', $insertValues)
+            $insertKeys,
+            $insertValues
         );
 
         $this->pdo->query($sql);
