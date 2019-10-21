@@ -87,9 +87,11 @@ class Manager
             /* Get part of data from reader */
             while ($data = $readerArray['reader']->read()) {
                 $readTransformer = new $readerArray['transformer'];
-                if (!$readTransformer instanceof Reader\Transformer\TransformerInterface) {
+                if (!$readTransformer instanceof Reader\Transformer\EntityTransformerInterface
+                    && !$readTransformer instanceof Reader\Transformer\CollectionTransformerInterface
+                ) {
                     throw new ConverterException(
-                        'Transformer `'.$readerArray['transformer'].'` does not implement Reader\Transformer\TransformerInterface!'
+                        'Transformer `'.$readerArray['transformer'].'` does not implement interfaces from Reader\Transformer!'
                     );
                 }
 
@@ -107,9 +109,11 @@ class Manager
                         $writeData = $readData;
                         if (isset($writerArray['transformer']) && !empty($writerArray['transformer'])) {
                             $writeTransformer = new $writerArray['transformer'];
-                            if (!$writeTransformer instanceof Writer\Transformer\TransformerInterface) {
+                            if (!$writeTransformer instanceof Writer\Transformer\EntityTransformerInterface
+                                && !$writeTransformer instanceof Writer\Transformer\CollectionTransformerInterface
+                            ) {
                                 throw new ConverterException(
-                                    'Transformer `' . $writerArray['transformer'] . '` does not implement Writer\Transformer\TransformerInterface!'
+                                    'Transformer `' . $writerArray['transformer'] . '` does not implement interfaces from Writer\Transformer!'
                                 );
                             }
 

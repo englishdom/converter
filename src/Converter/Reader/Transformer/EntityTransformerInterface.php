@@ -3,7 +3,7 @@ namespace Converter\Reader\Transformer;
 
 use Converter\Processor\Entity\EntityConverterInterface;
 
-interface TransformerInterface
+interface EntityTransformerInterface
 {
 
     /**

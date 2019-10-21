@@ -6,13 +6,23 @@ use Converter\Exception;
 
 class FileExistProcessor implements ProcessorInterface
 {
-    public function process(Entity\EntityConverterInterface $entity)
+    public function process($entity)
     {
-        if (!$entity instanceof Entity\EntityFileProcessorInterface) {
+        if ($entity instanceof \Traversable) {
+            foreach ($entity as $one) {
+                $this->exec($one);
+            }
+        } elseif ($entity instanceof Entity\EntityFileProcessorInterface) {
+            $this->exec($entity);
+        } else {
             throw new Exception\ProcessorException(
                 'Entity '.get_class($entity).' does not implement interface EntityFileProcessorInterface!'
             );
         }
+    }
+
+    protected function exec(Entity\EntityFileProcessorInterface $entity)
+    {
         if (file_exists($entity->getFilePath())) {
             $entity->setFileExist(true);
         } else {

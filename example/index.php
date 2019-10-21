@@ -23,10 +23,15 @@ $writer = new \Converter\Writer\PdoWriter(
     'images'
 );
 
+//$manager = new \Converter\Manager(
+//    [['reader' => $reader, 'transformer' => \Example\Transformer\Reader::class]],
+//    [new \Converter\Processor\FileExistProcessor()],
+//    [['writer' => $writer, 'transformer' => \Example\Transformer\Writer::class]]
+//);
 $manager = new \Converter\Manager(
-    [['reader' => $reader, 'transformer' => \Example\Transformer\Reader::class]],
+    [['reader' => $reader, 'transformer' => \Example\Transformer\CollectionReader::class]],
     [new \Converter\Processor\FileExistProcessor()],
-    [['writer' => $writer, 'transformer' => \Example\Transformer\Writer::class]]
+    [['writer' => $writer, 'transformer' => \Example\Transformer\CollectionWriter::class]]
 );
 $manager->manage();
 
