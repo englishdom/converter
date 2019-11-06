@@ -6,7 +6,7 @@ use Mockery;
 use Converter\Reader\PdoReader;
 use Unit\ExtendTestCase;
 
-class PDOReaderTest extends ExtendTestCase
+class PDOWriterTest extends ExtendTestCase
 {
     /**
      * @var PdoReader|Mockery\MockInterface
@@ -26,7 +26,7 @@ class PDOReaderTest extends ExtendTestCase
         $property = parent::getProtectedProperty(PdoReader::class, 'sql');
         $value = $property->getValue($this->reader);
 
-        $this->assertEquals('SELECT * FROM `table` LIMIT 1000 OFFSET 0', $value);
+        $this->assertEquals('SELECT * FROM `table`', $value);
     }
 
     public function testSetLimit()
@@ -53,14 +53,22 @@ class PDOReaderTest extends ExtendTestCase
         $this->assertEquals(2000, $value);
     }
 
-    public function testCompleteSql()
+    public function testLimit()
     {
         $this->reader->setLimit(2000);
-        $this->reader->setOffset(2000);
+
+        $property = parent::getProtectedProperty(PdoReader::class, 'limit');
+        $limit = $property->getValue($this->reader);
+
+        $this->assertEquals(2000, $limit);
+    }
+
+    public function testCompleteSql()
+    {
         $this->reader->setSql('SELECT * FROM table');
         $property = parent::getProtectedProperty(PdoReader::class, 'sql');
-        $value = $property->getValue($this->reader);
+        $sql = $property->getValue($this->reader);
 
-        $this->assertEquals('SELECT * FROM table LIMIT 2000 OFFSET 2000', $value);
+        $this->assertEquals('SELECT * FROM table', $sql);
     }
 }
