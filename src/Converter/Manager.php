@@ -83,6 +83,8 @@ class Manager
 
     public function manage()
     {
+        $returnData = [];
+
         foreach ($this->readers as $readerArray) {
             /* Get part of data from reader */
             while ($data = $readerArray['reader']->read()) {
@@ -119,10 +121,11 @@ class Manager
                             $writeData = $writerArray['transformer']->transform($readData);
                         }
 
-                        $writerArray['writer']->write($writeData);
+                        $returnData[] = $writerArray['writer']->write($writeData);
                     }
                 }
             }
         }
+        return $returnData;
     }
 }

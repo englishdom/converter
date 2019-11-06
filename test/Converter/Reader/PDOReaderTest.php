@@ -26,7 +26,7 @@ class PDOReaderTest extends ExtendTestCase
         $property = parent::getProtectedProperty(PdoReader::class, 'sql');
         $value = $property->getValue($this->reader);
 
-        $this->assertEquals('SELECT * FROM `table` LIMIT 1000 OFFSET 0', $value);
+        $this->assertEquals('SELECT * FROM `table`', $value);
     }
 
     public function testSetLimit()
@@ -61,6 +61,6 @@ class PDOReaderTest extends ExtendTestCase
         $property = parent::getProtectedProperty(PdoReader::class, 'sql');
         $value = $property->getValue($this->reader);
 
-        $this->assertEquals('SELECT * FROM table LIMIT 2000 OFFSET 2000', $value);
+        $this->assertEquals('SELECT * FROM table', $value);
     }
 }
