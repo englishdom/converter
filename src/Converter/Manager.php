@@ -99,6 +99,9 @@ class Manager
                 foreach ($data as $key => $one) {
                     /* start reader transformer */
                     $readData = $readerArray['transformer']->transform($one);
+                    if ($readData === null) {
+                        continue;
+                    }
 
                     /* start processors */
                     foreach ($this->getProcessors() as $processor) {
@@ -119,6 +122,9 @@ class Manager
 
                             /* start writer transformer */
                             $writeData = $writerArray['transformer']->transform($readData);
+                            if ($writeData === null) {
+                                continue;
+                            }
                         }
 
                         $returnData[] = $writerArray['writer']->write($writeData);

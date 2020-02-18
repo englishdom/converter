@@ -8,7 +8,7 @@ use Example\Entity\TextEntity;
 
 class TextReader implements EntityTransformerInterface
 {
-    public function transform($data): EntityConverterInterface
+    public function transform($data): ?EntityConverterInterface
     {
         $entity = new TextEntity();
         $entity->setText($data);
