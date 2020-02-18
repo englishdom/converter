@@ -4,5 +4,9 @@ namespace Converter\Reader\Transformer;
 
 interface CollectionTransformerInterface
 {
-    public function transform($data): \Traversable;
+    /**
+     * @param $data
+     * @return \Traversable|null
+     */
+    public function transform($data): ?\Traversable;
 }

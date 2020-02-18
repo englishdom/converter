@@ -9,7 +9,7 @@ interface EntityTransformerInterface
     /**
      * Get data from reader and return entity to processor
      * @param $entity
-     * @return mixed
+     * @return array|null
      */
-    public function transform(EntityConverterInterface $entity): array;
+    public function transform(EntityConverterInterface $entity): ?array;
 }

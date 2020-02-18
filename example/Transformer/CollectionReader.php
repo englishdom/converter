@@ -7,7 +7,7 @@ use Example\Entity\Entity;
 
 class CollectionReader implements CollectionTransformerInterface
 {
-    public function transform($data): \Traversable
+    public function transform($data): ?\Traversable
     {
         $collection = new \SplObjectStorage();
         $entity = new Entity();
