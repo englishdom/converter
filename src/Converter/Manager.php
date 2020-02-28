@@ -2,6 +2,8 @@
 namespace Converter;
 
 use Converter\Exception\ConverterException;
+use Converter\Exception\ProcessorException;
+use Converter\Exception\WriterException;
 
 class Manager
 {
@@ -81,7 +83,7 @@ class Manager
         return $this->writers;
     }
 
-    public function manage()
+    public function manage(bool $exceptions = true)
     {
         $returnData = [];
 
@@ -91,6 +93,9 @@ class Manager
                 if (!$readerArray['transformer'] instanceof Reader\Transformer\EntityTransformerInterface
                     && !$readerArray['transformer'] instanceof Reader\Transformer\CollectionTransformerInterface
                 ) {
+                    if ($exceptions === false) {
+                        continue;
+                    }
                     throw new ConverterException(
                         'The `'.get_class($readerArray['transformer']).'` does not implement interfaces from Reader\Transformer!'
                     );
@@ -105,7 +110,14 @@ class Manager
 
                     /* start processors */
                     foreach ($this->getProcessors() as $processor) {
-                        $processor->process($readData);
+                        try {
+                            $processor->process($readData);
+                        } catch (\Exception $err) {
+                            if ($exceptions === false) {
+                                continue;
+                            }
+                            throw new ProcessorException($err->getMessage());
+                        }
                     }
 
                     /* start writers */
@@ -127,7 +139,14 @@ class Manager
                             }
                         }
 
-                        $returnData[] = $writerArray['writer']->write($writeData);
+                        try {
+                            $returnData[] = $writerArray['writer']->write($writeData);
+                        } catch (\Exception $err) {
+                            if ($exceptions === false) {
+                                continue;
+                            }
+                            throw new WriterException($err->getMessage());
+                        }
                     }
                 }
             }
